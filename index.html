@@ -12,29 +12,1073 @@
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<style>
+			body {
+				--r-heading-font: Noto Sans Mono;
+				--r-main-font: Noto Sans Mono;
+				--r-block-margin: 0px;
+			}
+
+			.overlay {
+				position: fixed;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+			}
+
+			.trans {
+				background-clip: text;
+				-webkit-background-clip: text;
+				color: transparent !important;
+
+				--t-blue: #4fa5c2;
+				--t-pink: #f587ac;
+				--t-white: #f9fbfc;
+
+				background-image: linear-gradient(
+					var(--t-blue) 0%,
+					var(--t-blue) 35%,
+					var(--t-pink) 35%,
+					var(--t-pink) 47%,
+					var(--t-white) 47%,
+					var(--t-white) 59%,
+					var(--t-pink) 59%,
+					var(--t-pink) 70%,
+					var(--t-blue) 70%,
+					var(--t-blue) 100%
+				);
+			}
+
+			/* I adapted the timeline from https://www.w3schools.com/howto/howto_css_timeline.asp
+			 since it seemed to fit my needs */
+
+			/* The actual timeline (the vertical ruler) */
+			.timeline {
+				position: relative;
+				margin: 0 auto;
+			}
+
+			/* The actual timeline (the vertical ruler) */
+			.slides .timeline::after {
+				content: '';
+				position: absolute;
+				width: 6px;
+				background-color: white;
+				top: -500%;
+				height: 1100%;
+				left: 50%;
+				margin-left: -3px;
+			}
+
+			/* Container around content */
+			.container {
+				padding: 0px 0px 20px 0px;
+				position: relative;
+				background-color: inherit;
+				width: 50%;
+			}
+
+			.container p {
+				font-size: 30px;
+				padding: 0px 10px;
+			}
+
+			.container h1 {
+				font-size: calc(var(--r-heading1-size) * 0.5);
+			}
+
+			.container h2 {
+				font-size: calc(var(--r-heading2-size) * 0.5);
+			}
+
+			.container h3 {
+				font-size: calc(var(--r-heading3-size) * 0.5);
+			}
+
+			.container h4 {
+				font-size: calc(var(--r-heading4-size) * 0.5);
+			}
+
+			/* The circles on the timeline */
+			.right::after, .left::after {
+				content: '';
+				position: absolute;
+				width: 25px;
+				height: 25px;
+				right: -17px;
+				background-color: white;
+				border: 4px solid #FF9F55;
+				top: 15px;
+				border-radius: 50%;
+				z-index: 1;
+			}
+
+			.double:after {
+				content: '';
+				position: absolute;
+				width: 25px;
+				height: 25px;
+				left: calc(50% - 16px); 
+				background-color: white;
+				border: 4px solid #FF9F55;
+				top: 15px;
+				border-radius: 50%;
+				z-index: 1;
+			}
+
+			/* Place the container to the right */
+			.right {
+				left: calc(50% + 40px);
+			}
+
+			/* Add arrows to the right container (pointing left) */
+			.right::before {
+				content: " ";
+				height: 0;
+				position: absolute;
+				top: 22px;
+				left: -10px;
+				width: 0;
+				z-index: 1;
+				border: medium solid white;
+				border-width: 10px 10px 10px 0;
+				border-color: transparent white transparent transparent;
+			}
+
+			/* Fix the circle for containers on the right side */
+			.right::after {
+				left: -56px;
+			}
+
+			/* Place the container to the left */
+			.left {
+				left: 0;
+			}
+
+			/* Add arrows to the left container (pointing right) */
+			.left::before {
+				content: " ";
+				height: 0;
+				position: absolute;
+				top: 22px;
+				width: 0;
+				z-index: 1;
+				right: 36px;
+				border: medium solid white;
+				border-width: 10px 0 10px 10px;
+				border-color: transparent transparent transparent white;
+			}
+
+			/* double width two column box */
+			.double {
+				width: 100% !important;
+				columns: 2;
+			}
+
+			.middle {
+				position: relative;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			.fadeeffect {
+				transition: opacity 1000ms ease-in-out;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-position="left 3% bottom 6%">
+					<h1>PowerPC, Emulation, and Transition</h1>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Who am I?</h2>
+					Erin Cornelius / ac0rn
+					<a href="https://onionshark.com">https://onionshark.com</a>
+					<br/>
+					she/her
+					<aside class="notes">
+						<h3>5 minutes</h3>
+						<p>I am Erin Cornelius, also known as ac0rn, senior staff researcher at GRIMM. I've
+						been at GRIMM for a little over six years.</p>
+						<p>It doesn't feel like it but I suppose there are some things during that time that
+						have probably messed with my perception of time.</p>
+						<p>Before I officially worked in cybersecurity I did embedded systems development,
+						testing, integration for a variety of industries, including telecom, aerospace,
+						medical, industrial controls.</p>
+						<p>At GRIMM I do a wide range of things:</p>
+						<ul>
+							<li>vulnerability research</li>
+							<li>hardware reverse engineering</li>
+							<li>software reverse engineering</li>
+							<li>Training development</li>
+							<li>teaching that training I helped develop</li>
+							<li>One of the key things I do is help mentor researchers and help them learn
+								new skills</li>
+						</ul>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h4>If Someone Sounds Like They Know What They Are Talking About...</h4>
+					<ol>
+						<li>They are full of shit</li>
+						<li>They have been working with &ltthing&gt for 3+ years</li>
+						<li>They created &ltthing&gt</li>
+					</ol>
+					<pre></pre>
+					<aside class="notes">
+						<p>I very much enjoy helping people learn new things. I'm going to tell you all the
+						thing I always say to people I'm training or mentoring</p>
+						<p>If someone sounds like they know what they are talking about there are only three
+						possibilities</p>
+						<p>being full of shit is a very popular option</p>
+						<p>Just remember that once you have been working with a tech for three+ years that you
+						will also know what you are talking about</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Why Emulate Something?</h2>
+					<ul>
+						<li>Bare metal systems are a PITA</li>
+						<li>Full system emulation provides for additional analysis and information collection</li>
+						<li>Allows for more targeted reverse engineering</li>
+						<li>"It's useful"</li>
+					</ul>
+					<aside class="notes">
+						<h3>2 minutes</h3>
+						<p>We'll get to story time shortly but before that I want to make sure everyone
+						has a basic idea of what the benefits of using a tool like an emulator are</p>
+						<p>Bare metal systems provide very little visibility into what is going
+						on without sophisticated and expensive tools such as a Lauterbach TRACE32
+						which are also challenging to set up</p>
+						<p>Full system emulation provides many opportunities for analysis and
+						collecting information that is useful when reverse engineering</p>
+						<p>Emulation can be extremely helpful in reverse engineering such as helping to
+						bypass tamper protections or anti-debug features. For example in Linux the
+						PTRACE system call can be used by a process to get debug access
+						to itself and thus prevent a debugger for attaching, or detection of if a
+						debugger is already attached. If we have full system emulation then we can
+						make the system call return whatever we want.</p>
+						<p>For example vivisect uses it's emulation capabilities to identify where code
+						is in a binary. You point it at a block of memory and it attempts to decode 
+						instructions, if it finds valid instructions from the start point to some sort
+						of return instruction then it assumes you have found valid code</p>
+						<p>Vivisect has the ability to take a function, fills in the register arguments
+						and stack parameters with taint values, then executes the code. Reads and writes
+						to memory are tracked during emulation, and at the end you can see what the effects
+						of the different input taints are. For example if the program counter is set to a
+						value based off of an input parameter then you immediately know that this particular
+						function is has a potential vulnerability in it.</p>
+						<p>So that's a lot of words to basically say "because it's useful"</p>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Why A New Emulation Tool?</h2>
+					<ul>
+						<li>QEMU is popular, but it's codebase is terrible (last I looked)</li>
+						<li>Existing tools don't make me happy</li>
+						<li>Because I want to</li>
+						<li>Also it was my job for the DARPA AMP program</li>
+					</ul>
+					<aside class="notes">
+						<h3>2 minutes</h3>
+						<p>"Ok great" you say, "you've convinced me that emulation is fantastic, but aren't
+						there already existing emulators out there? Why not use them?"</p>
+						<p>Good question. QEMU is a common tool, the user mode emulation on Linux works really
+						well but full system emulation can be challenging to set up. If you've ever tried to get
+						a Raspberry PI system image running in QEMU you know what I mean. Documentation of how 
+						to do things changes, drivers and features get broken by updates. Building on existing
+						complicated open source project can be a challenge.</p>
+						<p>When I say "codebase is terrible" I just mean in my opinion<p>
+						<p>We haven't gotten to a particular topic quite yet, but the next reason is because
+						existing tools don't do things quite the way I want, or don't approach problems the way
+						I want them to</p>
+						<p>So short answer is because I want to</p>
+						<p>Also I was assigned to do this for work because we were partners with AIS as part of
+						the DARPA AMP program. I'll explain more about that in a second.</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Why PowerPC?</h2>
+					<ul>
+						<li>Popular in specific embedded controls</li>
+						<li>Existing emulation tools are limited, no VLE support</li>
+						<li>I was assigned to for the DARPA AMP program</li>
+					</ul>
+					<aside class="notes">
+						<h3>2 minutes</h3>
+						<p>In embedded devices, "cyber physical systems" if you must, we often see PowerPC in
+						automotive controls and aerospace devices. Those industries have used PowerPC for years
+						and have just kind of kept doing it. Maybe they have a technical reason, maybe it's just
+						because the company is familiar with the architecture? who knows.</p>
+						<p>There isn't much open source that handles PowerPC well for emulation. With QEMU you
+						can emulate an early 2000's Mac but they don't support features on new chips such as VLE 
+						(Variable Length Encoding) instructions - you can think of them like thumb2 for ARM.</p>
+						<p>As part of my past work experience in those various industries I've done a lot of
+						development, integration and testing on PowerPC platforms, so I've somehow become a bit
+						of an expert in PowerPC. So it makes sense that as I was working at GRIMM when we got 
+						assigned to work on a PowerPC emulator as part of the DARPA AMP program that I got
+						assigned to it</p>
+						<p>My friend Heather says: "If it works, don't breath on it, don't fucking touch it,
+						otherwise it's going to break" (why companies don't like changing things)</p>
+					</aside>
+				</section>
+				<section data-background-image="media/amp.png"
+						 data-background-position="top"
+						 data-background-transition="fade">
+					<aside class="notes">
+						<h3>1 minutes</h3>
+						<p>So what is AMP? It stands for Assured Micropatching (as you see on the slide).
+						You can go read about it if you want more detail. Because I've already talked for too 
+						long without starting the story part of this talk) I'll give you a quick summary of the
+						problem AMP is trying to address.</p>
+						 data-background-opacity="0.4"
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>AMP</h2>
+					<ul>
+						<a style="font-size: 32px; display: block; left: -5%; width: 120%;"
+						   href="https://www.darpa.mil/program/assured-micropatching">
+							https://www.darpa.mil/program/assured-micropatching</a>
+						<br/>
+						<li>Lift high level code from binaries</li>
+						<li>Modify that lifted code</li>
+						<li>Apply patch into binary</li>
+						<li>Assurance</li>
+						<li class="fragment">Test those tools</li>
+					</ul>
+					<aside class="notes">
+						<h3>1 minutes</h3>
+						<p>Let's say you have a critical device you rely on and the vendor goes out of business
+						or maybe news of a vulnerability is published and the vendor refuses to fix it. How do you
+						patch the vulnerability?</p>
+						<p>Micropatching!</p>
+						<p>You have to get the firmware, find the bug, make a binary patch that fixes the issue
+						and figure out how to apply it. Typically this requires a subject matter expert.</p>
+						<p>In short what I have highlighted in red from the DARPA webpage, create capability that
+						can be used for rapid patching of legacy binaries in mission critical systems.</p>
+						<p>Here's what most of the teams have been doing</p>
+						<p>I won't go into detail about most of this because it's not what I worked on, and some
+						of the tools are probably going to be talked about at one of the events this week or were
+						last year. I know ofrak was released last summer, angr has a gui now called Angr Management
+						that was initially released in 2019 and improvements have continued to be made. I believe
+						Fish will talk about it his year at defcon also.</p>
+						<p>Anyways, I find the tools that have been created and improved as part of this project
+						interesting but that's not what I've been working on.</p>
+						<p>AIS, Cummins, and GRIMM are the team that tests those tools. The end goal is to have the
+						tools find bugs in a real embedded controller. Because Cummins is a partner one of their
+						engine controllers is the target device.</p>
+						<p>But this controller runs a modern (ish) PowerPC chip that there is no good emulator for.
+						By the end of the project the goal was to have a tool that the different teams could use as
+						a reference, or one that could be used to verify the tools in some fashion.</p>
+						<p>And that is how I got assigned to create a PowerPC emulator</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>MPC5674F</h2>
+					<img src="media/mpc5674f_block_diagram.png" width="60%">
+					<aside class="notes">
+						<p>This is the block diagram for the MPC5674F. It's from the processor reference manual. I
+						won't dwell on it very long but the one thing I will point out here is the yellow box at the
+						top. It indicates that this processor uses an NXP e200z7 core with a few additional
+						components like VLE and SPE2. VLE I've already mentioned. SPE2 is an NXP-proprietary component
+						that implements custom floating point and vector instructions. So while this is a PowerPC
+						chip it doesn't implement standard PowerPC floating point or vector instructions.</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>MPC5674F</h2>
+					<img src="media/manuals.png" width="90%">
+					<aside class="notes">
+						<p>Again I don't want to dwell here. Just sharing the stack of reference manuals we used as
+						reference material while working on the emulator</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Conway's Law</h2>
+					<p style="text-align: left">
+						Any organization that designs a system will produce a design whose structure is a
+						copy of the organization's communication structure
+					</p>
+					<p style="text-align: left">
+						- Melvin E. Conway
+					</p>
+					<aside class="notes">
+						<h3>1 minutes</h3>
+						<p>This can be loosely interpreted to mean that systems tend to mimic the people
+						and groups who design them. This should be fairly obvious, the tools/systems/devices
+						that a person creates tends to mimic how they think and solve problems. The tools I
+						make I know are a reflection of how I think about problems.</p>
+						<p>Incidentally this is one reason that I encourage people to make your own tool even
+						if there are many existing tools that accomplish the same thing, how you use a tool is
+						closely tied to how you think about problems so if you have a tool that conflicts with
+						how you think about problems it will be difficult to use. It's not doing work someone
+						else has done all over again, it helps you learn about the problem or system or protocol,
+						and you end up with a tool that works well for you.</p>
+						<p>Anyways, back to Conway's law</p>
+						<p>When looking back at this project in preparation for doing this talk I was struck
+						by how progress of the emulator seemed to track along with my personal progress of
+						figuring myself out.</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>How To Build An Emu</h2>
+					<h2>^H^H^H^H^H^H</h2>
+					<h2>A <span class="trans">Gender</span></h2>
+					<aside class="notes">
+						<h3>20 minutes</h3>
+						<p>So story time! Time to talk about the work I did on this emulator, what I learned,
+						what the challenges have been, and what I expect the future challenges will be</p>
+						<p>By now I assume it's obvious that I am trans, when I said "figuring myself out"
+						in the previous slide I mean finally coming to terms with the fact that I am a woman
+						and have always wanted to be and finally confronting the question "what should I to do
+						about this?"</p>
+						<p>You're not gonna get the full nitty gritty because that takes a while and does get a
+						a little personal, already this talk is going to be way more personal than anything I've
+						talked about before</p>
+						<p>What do these things have to do with each other? Nothing! They just happened
+						to be occurring at the same time in my life</p>
+						<p>Everything happens at some time</p>
+					</aside>
+				</section>
+				<section class="timeline"
+						 data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<section>
+						<div class="container left">
+							<h2>Winter 2014</h2>
+							<img src="media/2014_selfie.jpg" width="50%">
+						</div>
+						<aside class="notes">
+							<p>this is the only surviving selfie I ever attempted to take of myself before coming
+							out, no idea how I didn't delete it. This is really only relevant here because this is
+							around the time I started thinking more in depth about my gender.</p>
+							<p>Probably worth mentioning that I don't mind old pictures of myself? Like this is a
+							very personal thing for trans people so it's not something everyone is comfortable
+							sharing. I have no shame so it's whatever. I still don't enjoy old pictures but they're
+							interesting to see how I've changed. Also it doesn't look like me, it never felt like me,
+							so it's kind of an abstract thing.</p>
+							<p>The only reason I like old pictures of me is because of how different they look from me.</p>
+							<p>Also worth nothing that at this point in time I had already been diagnosed as ADHD as
+							an adult, it took a few years after being diagnosed before really understanding the ways
+							that being ADHD affected me. It's probably obvious that I was not particularly happy
+							when I attempted to take this picture... Yet another reason I'm surprised I never
+							deleted it.</p>
+							<p>Anyways, part of this story is is about emulation, PowerPC and reverse engineering.
+							The other part of this story is about me essentially starting to recognize patterns in
+							myself and trying to use the information of those patterns to learn more about myself.
+							So let's move on and I'll let you know what I've learned about myself. Or what I
+							learned professionally.</p>
+							<p>Anyways, enough of that, let's move on.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>Summer 2018</h2>
+							<p>Started work on Vivisect PowerPC
+							<a style="font-size: 20px; display: block; left: -10%; width: 120%;"
+							   href="https://github.com/ehntoo/binaryninja-vle">https://github.com/ehntoo/binaryninja-vle</a>
+						</div>
+						<div class="container left">
+							<h2>Winter-Summer 2019</h2>
+							<p>Project to improve Vivisect PowerPC support</p>
+							<img src="media/t4240.jpg" width="50%">
+						</div>
+						<aside class="notes">
+							<p>Atlas started work on PowerPC support for vivisect but didn't get very far because
+							work kept getting in the way</p>
+							<p>Mitch (another coworker) also created a PowerPC VLE disassembler plugin for Binary
+							Ninja at the same time. Unfortunately it was based on libvle and there were a few bugs
+							and gaps in that library at the time.</p>
+							<br/>
+							<p>GRIMM got an award from NMFTA to officially add and improve PowerPC support to
+							Vivisect. Because PowerPC is so common in transportation controllers they were
+							attempting to push disassembler/research tools to better support PowerPC.</p>
+							<p>The image there is an NXP multicore 64-bit PowerPC reference design. It appears
+							designed to be a router platform I guess. But I did a yocto build for it so we could
+							log in to a native PowerPC Linux platform and play around with some native
+							applications and debugging.</p>
+							<p>I didn't help with the initial code for the disassembly/emulation of the Standard
+							PowerPC instructions but I did help make a bunch of unit tests to ensure disassembly
+							was right, I the output from a few other tools and took the instructions from some
+							random PowerPC binaries so we could compare the output of Vivisect to other tools.
+							I found a few bugs in other tools and there were a few customization's of
+							how we wanted the output to look.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>January 2020</h2>
+							<img src="media/2020_pre_pandemic.jpg" width="40%">
+						</div>
+						<div class="container left">
+							<h2>Summer 2020</h2>
+							<p>DARPA AMP kicks off</p>
+							<img src="media/amp_small.png" width="60%">
+						</div>
+						<aside class="notes">
+							<p>So this is the last picture I have before the pandemic started and I started
+							growing my hair out. I always wanted to grow my hair out but for some reason felt
+							it was silly and I should look "professional" instead. That was a stupid idea, but
+							the pandemic was a good excuse for me to not get a haircut at least.</p>
+							<p>I'd been working at GRIMM about 3 years at this point and I had mostly overcome
+							my initial impostors syndrome. Hadn't fully grown confident in my ability to teach
+							or mentor yet.</p>
+							<p>By this point I had finally realized that I was probably autistic. As a
+							result of that realization I had started learning to be gentler with myself. I
+							started recognizing the situations and stresses that would lead me to want to shut
+							out the world and instead of trying to force my self through those situations I
+							learned it was better to get some time to myself, be quiet and just let myself
+							recover first.</p>
+							<p>Poor Erin had no idea what the future would hold for her. At this point I
+							assumed I was probably nonbinary of some sort but that gender was bullshit anyways
+							and I didn't care.</p>
+							<p>I do want to emphasize here that this doesn't mean that everyone nonbinary just
+							hasn't made up their mind yet because that is far from the truth. All I'm describing
+							is what I was thinking. I'd ended up on nonbinary because for me it was less scary
+							than accepting that I was trans. And to a large part I wasn't yet ready to accept
+							that I was trans.</p>
+							<br/>
+							<p>So then the AMP project kicks off in the summer of 2020. And my colleagues start
+							working on the project. I was on another project at this point.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>Fall 2020</h2>
+							<p>Bare metal emulator framework created</p>
+							<img src="media/emulator.png" width="60%">
+						</div>
+						<div class="container left">
+							<h2>Late Fall 2020</h2>
+							<p>I started working with Matt on the PowerPC emulator.</p>
+						</div>
+						<aside class="notes">
+							<p>My colleague Matt created the initial bare metal emulator framework along with
+							defining the way Memory Mapped IO reads and writes will be able to plug into 
+							a generic peripheral "module" framework.</p>
+							<br/>
+							<p>Which really meant learning how Vivisect was designed and structured. This took
+							a little while. I still am not great at using Vivisect, but I can write code for it</p>
+							<p>I will also point out that there are other colleagues who worked on the emulator
+							also. I've been the primary developer for it but others have helped along the way.</p>
+							<p>In December we hired a new junior researcher, Jordan Cyr, who didn't have much
+							experience with assembly or programming python, but he wanted to learn. So through
+							much of the next year or so I helped mentor Jordan on writing python, how assembly
+							works, using GDB, etc.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>April 2021</h2>
+							<p>Created the SWT Peripheral</p>
+						</div>
+						<div class="container left">
+							<h2>May 2021</h2>
+							<p>Created the SIU and FMPLL peripherals</p>
+						</div>
+						<div class="container right">
+							<h2>May 2021</h2>
+							<img src="media/2021_may_desk.jpg" width="80%">
+						</div>
+						<aside class="notes">
+							<p>Software Watchdog Timer</p>
+							<p>Forced me to create a way to manage and track time within the emulator.</p>
+							<br/>
+							<p>System Integration Unit and Frequency Modulated Phase-Locked Loop (FMPLL)</p>
+							<p>With those peripherals created we were finally able to emulate the start of the
+							Cummins CM2350 booloader in the emulator.</p>
+							<br/>
+							<p>So now we've got something that should be able to start trying to run the firware
+							of the actual Cummins CM2350 controller. So I extracted the firmware. Actually we
+							already had a firmware that was extracted from another controller already, but I
+							wanted multiple images so I could see what changes between the different versions.
+							Also getting it working with the debugger meant that I could do spot checks on how
+							the actual NXP MPC5674F processor behaved in certain sections of code. Initially I
+							wanted to confirm that the FMPLL and SIU register states matched my first guess
+							at how I implemented the emulation.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>May 2021</h2>
+							<img src="media/2021_headshot.jpg" width="50%">
+						</div>
+						<aside class="notes">
+							<p>I had a talk at ESCAR USA in May 2021, it was held virtually of course. This was a
+							"professional" style picture that my partner took for me. Growing my hair out was going
+							well. It was around this time where I pretty sure that "Ok, yeah, perhaps I wanted to
+							be a woman at some point, but so what? Gender is all bullshit anyways, right? Besides
+							I'm old now so who cares, it's not like it's worth doing at this point in my life."</p>
+							<p>Well, at least where my mind was. Also... well, you know how the story ends, but
+							I cannot emphasize enough how wrong I was about being old and it not worth it.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>May 2021</h2>
+							<p>MMU and virtual memory addressing</p>
+							<img src="media/ppc_mas_regs.png" width="90%">
+						</div>
+						<aside class="notes">
+							<p>MMU is how you configure for 32-bit or VLE instructions to be decoded</p>
+							<p>You can also configure pages of memory to be big or little endian!</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>June 2021</h2>
+							<p>Flash</p>
+							<img src="media/flash_blocks.png" width="90%">
+						</div>
+						<div class="container right">
+							<h2>August 2021</h2>
+							<p>Interrupt handling & PowerPC Exceptions</p>
+						</div>
+						<aside class="notes">
+							<p>How does "flash" work anyways? Mention how you usually need to erase flash blocks
+							before you can write to them</p>
+							<p>How I accidentally "bricked" my test firmware image before I created a "backup
+							flash" system</p>
+							<p>This made me feel very happy (that I'd emulated how flash updated correctly) and
+							very dump that I didn't consider this possibility</p>
+							<br/>
+							<p>exception handlers are the method for the CPU to get notified when some sort of
+							unrecoverable condition has happened like a divide by zero, accessing invalid memory,
+							or a message has arrived on an external IO peripheral.
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>October 2021</h2>
+							<p>CAN & External IO peripherals</p>
+						</div>
+						<div class="container right">
+							<h2>November 2021</h2>
+							<p>SPI</p>
+						</div>
+						<div class="container left">
+							<h2>December 2021</h2>
+							<p>ADC, EBI</p>
+						</div>
+						<div class="container right">
+							<h2>Summer - Winter 2021</h2>
+							<p>Integration & Testing on real AMP challenge</p>
+						</div>
+						<aside class="notes">
+							<p>If you don't know what CAN feel free to stop by the Car Hacking Village at DEF CON
+							and there will be plenty of people to help you learn</p>
+							<br/>
+							<p>Serial Peripheral Interface. The wikipedia page is a pretty good description of
+							how it works</p>
+							<br/>
+							<p>Analog to Digital Conversion.</p>
+							<br/>
+							<p>External Bus Interface. Used to talk to external RAM on the MPC5674F. On many
+							embedded systems the processor has on-chip SRAM, but usually they can also interface
+							with external parallel bus components such as external SRAM.</p>
+							<br/>
+							<p>Lots of integration and testing on real AMP challenge, these components were the
+							last (ok, just mostly the last) parts bnecessary to run the CM2350 application so
+							after these were implemented I was able to run a demo AMP challenge binary that was
+							created to run on the CM2350</p>
+							<p>I got the basics of these peripherals done in August 2021, and then spent... well
+							about 5 months actually fully tested and implemented.</p>
+							<br/>
+							<p>On a personal note I think it was around October 2021 that one of the people I
+							followed on twitter just happened to mention that trouble forming long-term memories
+							was a symptom of cPTSD. Up until this point I had assumed it was just because I was ADHD
+							and tended to be forgetful. Like I really don't remember much of my life. So I finally
+							started to grapple with the idea that maybe I had cPTSD.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>January 2022</h2>
+							<p>Bare metal PPC firmware analysis in Vivisect</p>
+						</div>
+						<div class="container right">
+							<h2>February 2022</h2>
+							<p>Emulator moved to github!</p>
+							<a style="font-size: 22px; display: block; left: -10%; width: 120%;"
+							   href="https://github.com/Assured-Micropatching/CM2350-Emulator">
+								https://github.com/Assured-Micropatching/CM2350-Emulator
+							</a>
+						</div>
+						<div class="container left">
+							<h2>February 2022</h2>
+							<img src="media/2022_coming_out.jpg" width="40%">
+						</div>
+						<aside class="notes">
+							<p>Added raw PowerPC binary contained in an ELF file support to vivisect</p>
+							<br/>
+							<p>With the addition of a these peripherals I now had the minimum necessary
+							functionality to try and get CM2350 application to run!. Most of these were initially
+							implemented in August it just took quite a few months to actually fully test the
+							peripherals and work the bugs out. The peripherals were getting more complicated.</p>
+							<p>Move to github and split emulator and vivisect back into their independent parts</p>
+							<br/>
+							<p>Also early in Feburary I finally accepted myself and came out to my partner, this 
+							feels very symbolic in a silly way how the timeline aligns with the emulator project
+							but sometimes things just happen at the same time as other things.</p>
+							<br/>
+							<p>You'll notice from here that my timeline gets a little less populated with technical
+							stuff, that's somewhat because as the emulator became more functionally complete and
+							complicated it both takes more time to figure out how best to fit new functionality 
+							into the structure, and also a lot of the work started to be small fixes and changes
+							that are less easy to make a bullet point for.</p>
+							<p>Also this talk is already in danger of going too long...</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container double">
+							<div>
+								<h2>March 2022</h2>
+								<img src="media/2022_tdov.jpg" width="70%">
+							</div>
+							<div class="middle">
+								<img src="media/2022_tdov_2.jpg" width="80%">
+							</div>
+						</div>
+						<aside class="notes">
+							<p>The first week of March I had a training to teach to company, and had to decide if I
+							wanted to hide or not. But I knew how my brain works by this point and if I didn't come
+							out right now I knew that it would never feel like the right time.</p>
+							<p>Also I was so happy! I wanted to share the reason for my joy.</p>
+							<p>Lastly there were some people I followed on twitter who had come out publicly and
+							I knew that I found them being out to be motivational. I travel quite a bit for work
+							and perhaps if I was out and loud about who I was I could help other people feel like
+							they aren't alone.</p>
+							<br/>
+							<p>My first work trip after coming out was for the AMP program to CSU and it fell
+							right on top of Trans Day of Visibility. Well I had already come out on twitter and
+							linkedin, no way I wasn't going to dress as myself!</p>
+							<p>Buuuut I was incredibly nervous, as I said I'd come out twitter, and linked in,
+							to people I worked with, but that wasn't to people who I knew but saw maybe one or
+							two times a year so far on this project. This was a whole new challenge.</p>
+							<p>But it was amazing, and as you see from the picture here that day felt incredible.</p>
+							<p>This was the first day I wore a skirt professionally! It was a good day</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>May 2022</h2>
+							<img src="media/2022_headshot.jpg" width="60%">
+						</div>
+						<div class="container left">
+							<h2>June 2022</h2>
+							<p>Placeholder<br/>peripherals</p>
+						</div>
+						<aside class="notes">
+							<p>A year after my talk at ESCAR I was helping with GRIMMCon and they asked if I had
+							any professional headshots to share... Obviously I didn't yet. But my partner helped
+							me put on some makeup (I was not very good at it yet, and really I still am not) and
+							then took this picture. I was astonished at this picture, I never thought I would be
+							able to look so feminine.</p>
+							<br/>
+							<p>shakes fist at the NXP eTPU2 peripheral</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container right">
+							<h2>DC30</h2>
+							<img src="media/dc30.jpg" width="80%">
+						</div>
+						<aside class="notes">
+							<p>DEF CON last year was the first year I was here as myself an it was amazing.</p>
+							<p>The biggest thing I remember from this DEF CON is how good I felt and how much I was
+							able to enjoy life.</p>
+							<p>Also remember what I said about not being able to remember much of my life? Since
+							coming out I remember so much, it's absolutely crazy how full life has been. And last
+							year's DEF CON is certainly one of those moments that was just full of memories.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>Summer - Fall 2022</h2>
+							<p>Floating Point Instructions</p>
+						</div>
+						<div class="container right">
+							<h2>Summer - Fall 2022</h2>
+							<p>Vector Instructions</p>
+						</div>
+						<div class="container left">
+							<h2>November 2022</h2>
+							<p>SIM</p>
+						</div>
+						<div class="container right">
+							<h2>Fall 2022 - Winter 2023</h2>
+							<p>DMA & Interrupts</p>
+						</div>
+						<aside class="notes">
+							<p>By this point just about every PowerPC instruction was completed but we floating
+							point instructions still needed to be implemented. Remember that this isn't just the
+							PowerPC standard floating point instructions, it also included the NXP custom SPE
+							floating point instructions. This was work that Jordan worked on, so in addition to
+							learning how to write python, and how to disassemble binaries, and emulate assembly
+							instructions, he was now getting to learn how floating point representation works</p>
+							<br/>
+							<p>Another colleague, Dan Fego, joined us on the emulator project briefly and had
+							fun writing the standard PowerPC vector instructions, and the NXP custom SPE vector
+							instructions.</p>
+							<br/>
+							<p>Jordan wrote his first PowerPC emulator peripheral</p>
+							<br/>
+							<p>Direct Memory Access. When implementing  increased the complexity of how interrupts
+							could also be used to trigger automatic reads and writes of memory. This one took a
+							while to fully implement and test.</p>
+						</aside>
+					</section>
+					<section>
+						<div class="container left">
+							<h2>March 2022 - 2023</h2>
+							<p>Remote GDB server</p>
+						</div>
+						<div class="container right">
+							<h2>April 2023</h2>
+							<p>Accurate Timing</p>
+						</div>
+						<div class="container left">
+							<h2>May 2023</h2>
+							<p>External Watchdog</p>
+						</div>
+						<div class="container right">
+							<h2>YOU ARE HERE</h2>
+						</div>
+						<aside class="notes">
+							<p>Matt started the remote GDB support in vivisect back in 2022 but we never got time to
+							integrate it into the bare metal emulator in a meaningful way until March this year.</p>
+							<p>I finished integrating and testing the remote GDB server</p>
+							<br/>
+							<p>Why emulation timing so complicated and determined to make my life difficult?</p>
+							<p>The simple way we did timing early on ended up not being good enough when needing
+							to track events accurately across both external peripherals (like the External Watchdog)
+							but also because the emulator can't execute instructions at the same relative speed
+							as the real hardware so the internal timed events can end up happening too soon.</p>
+							<br/>
+							<p>The last change made in AMP Phase 2 was some of the board-level integration envisioned
+							from the start. The CM2350 has some hardware that causes the CPU to get reset if it hasn't
+							taken the correct action recently enough. This is common in a lot of embedded devices,
+							there are on-chip watchdogs that help ensure the software is working properly and then
+							typically another watchdog that sits external to the processor to handle the condition
+							where the internal software keeps the watchdog alive but some higher-level task processing
+							is not working properly.</p>
+						</aside>
+					</section>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Phase 3</h2>
+					<ul>
+						<li>Performance Improvements</li>
+						<li>A few peripherals still using placeholders</li>
+						<li>Improve ease of use</li>
+						<li>Needs more documentation</li>
+						<li>Abstract generic emulation framework</li>
+					</ul>
+					<aside class="notes">
+						<p>So that's where the emulator stands at the end of Phase 2 of the AMP project.</p>
+						<p>DARPA projects typically have 3 phases, the first is doing a basic proof of conept
+						the second phase is the bulk of the work and the third phase is the "transition" phase
+						where the funding is less but the goal is that other industry partners will start to take
+						an interest in the things being developed and invest in them.</p>
+						<p>Get it? Now we're in the transition phase?</p>
+						<p>There are quite a few smaller things that we hope to get done in phase 3, or outside of
+						the AMP program. It feels like there is a lot more to go but really it's basically done.</p>
+						<p>If you are changing less than 10% of the overall functionality of a thing, you are
+						done. It doesn't feel like you are done, but you are done enough to let other people
+						mess with it.</p>
+					</aside>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Conclusion</h2>
+					<ul>
+						<li>Emulator framework that works well for me</li>
+						<li>The emulator provides a bunch of hooks and features for additional analysis</li>
+						<li>I've learned a great deal about disassembly, emulation</li>
+						<li>Learned more about PowerPC than I really wanted to know</li>
+					</ul>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>Don't be afraid to make your own tool</h2>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>More Conclusions!</h2>
+					<ul>
+						<li>I like being me for the first time in my life</li>
+						<li>I enjoy life? <br/> <span style="font-size: 30px;">(Is this how life is supposed supposed to feel?)</span></li>
+					</ul>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-opacity="0.4"
+						 data-background-position="left 3% bottom 6%">
+					<h2>It's never too late to be yourself</h2>
+					<br/>
+					<br/>
+					<h2>It's never too late to love yourself</h2>
+				</section>
+				<section data-background-image="media/onionshark.png"
+						 data-background-size="11%"
+						 data-background-position="left 3% bottom 6%"
+						 id="autoplay-images">
+					<div class="r-stack">
+						<img class="fadeeffect" src="media/january.jpg" width="350px">
+						<img class="fadeeffect" src="media/april_1.jpg" width="350px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/april_2.jpg" width="400px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/may.jpg" width="350px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/june_2-1.jpg" width="550px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/june_3.jpg" width="350px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/june_4.jpg" width="350px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/july_2.jpg" width="300px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/july.jpg" width="350px;" style="opacity: 0;">
+						<img class="fadeeffect" src="media/june_1.jpg" width="350px;" style="opacity: 0;">
+					</div>
+					<aside class="notes">
+						<p>Questions?</p>
+					</aside>
+				</section>
 			</div>
 		</div>
-
+		<div class="overlay">
+			<!-- Demo Video -->
+			<video id="demo"
+				   style="height: 90%;
+						  position: absolute;
+						  top: 50%;
+						  left: 75%;
+						  transform: translateX(-50%) translateY(-50%);
+						  opacity: 0.5;"
+				   muted
+				   loop
+				   hidden
+				   src="media/test.mp4"
+				   type="video/mp4">
+		</div>
 		<script src="dist/reveal.js"></script>
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
 		<script>
+
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
 			Reveal.initialize({
+				transition: 'slide',
+				transitionSpeed: 'slow',
+				backgroundTransition: 'none',
+				progress: false,
 				hash: true,
+				controlsTutorial: false,
+				overview: false,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [
+					RevealMarkdown,
+					RevealNotes,
+					RevealZoom
+				],
 			});
+
+			// Custom keybindings:
+			//	<space>: display and start the video
+			const demoVideo = document.getElementById('demo');
+			Reveal.removeKeyBinding( 32 );
+			Reveal.addKeyBinding( { keyCode: 32, key: ' ', description: 'Toggle video' }, () => {
+				if ( demoVideo.paused ) {
+					demoVideo.hidden = false;
+					demoVideo.play();
+				} else {
+					demoVideo.hidden = true;
+					demoVideo.pause();
+				}
+			});
+
+			// I can't figure out a stock reveal.js way to animate these pictures so
+			// I guess I'm just doing it manually.
+
+			function animateImageSlide ( event ) {
+				if ( event.currentSlide.id == "autoplay-images" ) {
+					var images = event.currentSlide.getElementsByTagName("img");
+					var nextImage = 0;
+					var timer = setInterval(ChangeImage, 2000);
+					function ChangeImage() {
+						nextImage = nextImage + 1;
+						if (nextImage >= images.length) {
+							clearInterval(timer);
+						} else {
+							// Fade out current image
+							images[nextImage - 1].style.opacity = 0;
+
+							// Fade in new image
+							images[nextImage].style.opacity = 1;
+						}
+					} 
+				}
+			}
+
+			function resetImageSlide ( event ) {
+				if ( event.currentSlide.id == "autoplay-images" ) {
+					var images = event.currentSlide.getElementsByTagName("img");
+					images[0].style.opacity = 1;
+					for ( var i = 1; i < images.length; i++ ) {
+						images[i].style.opacity = 0;
+					}
+				}
+			}
+
+			Reveal.on( "slidechanged", animateImageSlide );
+			Reveal.on( "slidetransitionend", resetImageSlide );
+
 		</script>
 	</body>
 </html>
