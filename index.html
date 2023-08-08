@@ -996,7 +996,22 @@
 						  top: 50%;
 						  left: 75%;
 						  transform: translateX(-50%) translateY(-50%);
-						  opacity: 0.5;"
+						  opacity: 0.6;"
+				   muted
+				   loop
+				   hidden
+				   src="media/demo_verbose.mp4"
+				   type="video/mp4">
+		</div>
+		<div class="overlay">
+			<!-- Cat Video -->
+			<video id="cat"
+				   style="height: 90%;
+						  position: absolute;
+						  top: 50%;
+						  left: 25%;
+						  transform: translateX(-50%) translateY(-50%);
+						  opacity: 0.6;"
 				   muted
 				   loop
 				   hidden
@@ -1017,6 +1032,7 @@
 				transitionSpeed: 'slow',
 				backgroundTransition: 'none',
 				progress: false,
+				help: false,
 				hash: true,
 				controlsTutorial: false,
 				overview: false,
@@ -1030,10 +1046,21 @@
 			});
 
 			// Custom keybindings:
-			//	<space>: display and start the video
+			//	<space>: display and start the cat
+			const catVideo = document.getElementById('cat');
+			Reveal.addKeyBinding( { keyCode: 67, key: 'C', description: 'Toggle Cat' }, () => {
+				if ( catVideo.paused ) {
+					catVideo.hidden = false;
+					catVideo.play();
+				} else {
+					catVideo.hidden = true;
+					catVideo.pause();
+				}
+			});
+
+			//	V: display and start the demo
 			const demoVideo = document.getElementById('demo');
-			Reveal.removeKeyBinding( 32 );
-			Reveal.addKeyBinding( { keyCode: 32, key: ' ', description: 'Toggle video' }, () => {
+			Reveal.addKeyBinding( { keyCode: 68, key: 'D', description: 'Toggle Demo' }, () => {
 				if ( demoVideo.paused ) {
 					demoVideo.hidden = false;
 					demoVideo.play();
@@ -1050,34 +1077,36 @@
 				if ( event.currentSlide.id == "autoplay-images" ) {
 					var images = event.currentSlide.getElementsByTagName("img");
 					var nextImage = 0;
+
 					var timer = setInterval(ChangeImage, 2000);
 					function ChangeImage() {
-						nextImage = nextImage + 1;
-						if (nextImage >= images.length) {
+						var images = event.currentSlide.getElementsByTagName("img");
+						slide = Reveal.getCurrentSlide();
+						if ( slide.id != "autoplay-images" ) {
 							clearInterval(timer);
+
+							// Reset the slide opacity
+							images[0].style.opacity = 1;
+							for ( var i = 1; i < images.length; i++ ) {
+								images[i].style.opacity = 0;
+							}
 						} else {
-							// Fade out current image
-							images[nextImage - 1].style.opacity = 0;
+							nextImage = nextImage + 1;
+							if (nextImage >= images.length) {
+								clearInterval(timer);
+							} else {
+								// Fade out current image
+								images[nextImage - 1].style.opacity = 0;
 
-							// Fade in new image
-							images[nextImage].style.opacity = 1;
-						}
-					} 
-				}
-			}
-
-			function resetImageSlide ( event ) {
-				if ( event.currentSlide.id == "autoplay-images" ) {
-					var images = event.currentSlide.getElementsByTagName("img");
-					images[0].style.opacity = 1;
-					for ( var i = 1; i < images.length; i++ ) {
-						images[i].style.opacity = 0;
+								// Fade in new image
+								images[nextImage].style.opacity = 1;
+							}
+						} 
 					}
 				}
 			}
 
 			Reveal.on( "slidechanged", animateImageSlide );
-			Reveal.on( "slidetransitionend", resetImageSlide );
 
 		</script>
 	</body>
